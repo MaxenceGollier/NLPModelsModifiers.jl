@@ -218,14 +218,16 @@ end
 
 # not implemented: hess_structure, hess_coord, hess, ghjvprod
 
-function hess_structure(nlp::AbstractDiagonalQNModel)
-  rows = Vector{Int}(undef, nlp.meta.nnzh)
-  cols = Vector{Int}(undef, nlp.meta.nnzh)
+function NLPModels.hess_structure(nlp::AbstractDiagonalQNModel)
+  rows = Vector{Int}(undef, nlp.meta.nvar)
+  cols = Vector{Int}(undef, nlp.meta.nvar)
   hess_structure!(nlp, rows, cols)
   return rows, cols
 end
 
-function hess_structure!(nlp::AbstractDiagonalQNModel,rows,cols)
+function NLPModels.hess_structure!(nlp::AbstractDiagonalQNModel,rows,cols)
+  @lencheck nlp.meta.nvar rows
+  @lencheck nlp.meta.nvar cols
   rows .= collect(range(1,nlp.meta.nvar))
   cols .= collect(range(1,nlp.meta.nvar))
 end
