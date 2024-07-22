@@ -225,9 +225,12 @@ function NLPModels.hess_structure(nlp::AbstractDiagonalQNModel)
   return rows, cols
 end
 
-function NLPModels.hess_structure!(nlp::AbstractDiagonalQNModel,rows,cols)
+function NLPModels.hess_structure!(
+  nlp::AbstractDiagonalQNModel,
+  rows::AbstractVector{<:Integer},
+  cols::AbstractVector{<:Integer})
   @lencheck nlp.meta.nvar rows
   @lencheck nlp.meta.nvar cols
-  rows .= collect(range(1,nlp.meta.nvar))
-  cols .= collect(range(1,nlp.meta.nvar))
+  rows .= range(1,nlp.meta.nvar)
+  cols .= range(1,nlp.meta.nvar)
 end
