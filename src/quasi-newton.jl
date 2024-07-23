@@ -217,3 +217,20 @@ function Base.push!(nlp::QuasiNewtonModel, args...)
 end
 
 # not implemented: hess_structure, hess_coord, hess, ghjvprod
+
+function NLPModels.hess_structure(nlp::AbstractDiagonalQNModel)
+  rows = Vector{Int}(undef, nlp.meta.nvar)
+  cols = Vector{Int}(undef, nlp.meta.nvar)
+  hess_structure!(nlp, rows, cols)
+  return rows, cols
+end
+
+function NLPModels.hess_structure!(
+  nlp::AbstractDiagonalQNModel,
+  rows::AbstractVector{<:Integer},
+  cols::AbstractVector{<:Integer})
+  @lencheck nlp.meta.nvar rows
+  @lencheck nlp.meta.nvar cols
+  rows .= range(1,nlp.meta.nvar)
+  cols .= range(1,nlp.meta.nvar)
+end
