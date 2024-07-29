@@ -71,7 +71,8 @@ function DiagonalPSBModel(
   d0::S = fill!(S(undef, nlp.meta.nvar), one(T)),
 ) where {T, S}
   op = DiagonalPSB(d0)
-  return DiagonalQNModel{T, S, typeof(nlp), typeof(nlp.meta), typeof(op)}(nlp.meta, nlp, op)
+  meta = NLPModelMeta(nlp.meta, nnzh = nlp.meta.nvar)
+  return DiagonalQNModel{T, S, typeof(nlp), typeof(nlp.meta), typeof(op)}(meta, nlp, op)
 end
 
 """
@@ -88,7 +89,8 @@ function DiagonalAndreiModel(
   d0::S = fill!(S(undef, nlp.meta.nvar), one(T)),
 ) where {T, S}
   op = DiagonalAndrei(d0)
-  return DiagonalQNModel{T, S, typeof(nlp), typeof(nlp.meta), typeof(op)}(nlp.meta, nlp, op)
+  meta = NLPModelMeta(nlp.meta, nnzh = nlp.meta.nvar)
+  return DiagonalQNModel{T, S, typeof(nlp), typeof(nlp.meta), typeof(op)}(meta, nlp, op)
 end
 
 """
@@ -102,7 +104,8 @@ for more information about the used algorithms.
 """
 function SpectralGradientModel(nlp::AbstractNLPModel{T, S}; σ::T = one(T)) where {T, S}
   op = SpectralGradient(σ, nlp.meta.nvar)
-  return DiagonalQNModel{T, S, typeof(nlp), typeof(nlp.meta), typeof(op)}(nlp.meta, nlp, op)
+  meta = NLPModelMeta(nlp.meta, nnzh = nlp.meta.nvar)
+  return DiagonalQNModel{T, S, typeof(nlp), typeof(nlp.meta), typeof(op)}(meta, nlp, op)
 end
 
 NLPModels.show_header(io::IO, nlp::QuasiNewtonModel) =
